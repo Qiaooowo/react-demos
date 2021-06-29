@@ -26,7 +26,7 @@
               username: lastGist.owner.login,
               lastGistUrl: lastGist.html_url
             });
-          }.bind(this));
+          }.bind(this));//ajax初始this指向windiw ？（猜的）
         }
 
         render() {

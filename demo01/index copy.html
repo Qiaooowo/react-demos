@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<title>todolist</title>
+
+<head>
+  <meta charset="UTF-8" />
+  <script src="../build/react.development.js"></script>
+  <script src="../build/react-dom.development.js"></script>
+  <script src="../build/babel.min.js"></script>
+</head>
+
+<body>
+  <div id="example"></div>
+  <script type="text/babel">
+  
+    class TodoApp extends React.Component {
+      constructor(props) {
+        super(props);
+        this.state = { items: [], text: '' };
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+      }
+
+      render() {
+        return (
+          <div>
+            <h3>TODO</h3>
+            <TodoList todos={this.state.items} />
+            <form onSubmit={this.handleSubmit}>
+              <label htmlFor="new-todo">
+                What needs to be done?
+              </label>
+              <input
+                id="new-todo"
+                onChange={this.handleChange}
+                value={this.state.text}
+              />
+              <button>
+                Add #{this.state.items.length + 1}
+              </button>
+            </form>
+            <Clock />
+          </div>
+        );
+      }
+
+      handleChange(e) {
+        this.setState({ text: e.target.value });
+      }
+
+      handleSubmit(e) {
+        e.preventDefault();
+        if (this.state.text.length === 0) {
+          return;
+        }
+        const newItem = {
+          text: this.state.text,
+          id: Date.now()
+        };
+        this.setState(state => ({
+          items: state.items.concat(newItem),
+          text: ''
+        }));
+      }
+    }
+
+    class TodoList extends React.Component {
+      render() {
+        return (
+          <ul>
+            {this.props.todos.map(todo => (
+              <li key={todo.id}>{todo.text}</li>
+            ))}
+          </ul>
+        );
+      }
+    }
+    class Clock extends React.Component {
+      constructor(props) {
+        super(props);
+        this.state = { date: new Date() };
+      }
+      componentDidMount() {
+        this.timerID = setInterval(() => this.tick(), 1000);
+        //尽管 this.props 和 this.state 是 React 本身设置的，且都拥有特殊的含义，但是其实你可以向 class 中随意添加不参与数据流（比如计时器 ID）的额外字段。
+
+      }
+
+      componentwillunmount() {
+        clearInterval(this.timerID);
+      }
+
+      tick() {
+        this.setState({
+          date: new Date()
+        });
+      }
+
+      render() {
+        return (
+          <div>
+            <h1>Clock demo</h1>
+            <h2>It is {this.state.date.toLocaleTimeString()}.</h2>
+          </div>
+        )
+      }
+
+
+    }
+    ReactDOM.render(
+      <TodoApp />,
+      document.getElementById('example'),
+    );
+  </script>
+</body>
+
+</html>

@@ -11,9 +11,9 @@
     <!-- https://reactjs.org/docs/refs-and-the-dom.html#callback-refs -->
     <script type="text/babel">
       class MyComponent extends React.Component {
-        constructor(props) {
-          super(props);
-          this.myTextInput = React.createRef();
+        constructor() {
+          super();
+          this.myTextInput = React.createRef();  // React.createRef = 直接写this.refs.myTextInput.focus();
           this.handleClick = this.handleClick.bind(this)
         }
         handleClick() {

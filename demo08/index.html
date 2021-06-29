@@ -9,9 +9,10 @@
   <body>
     <div id="example"></div>
     <script type="text/babel">
+    //state即将组件作为一个状态机 
       class LikeButton extends React.Component {
-        constructor(props) {
-          super(props)
+        constructor() {
+          super()
           this.state = {
             liked: false
           }

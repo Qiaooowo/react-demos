@@ -24,7 +24,7 @@
           var value = this.state.value;
           return (
             <div>
-              <input type="text" value={value} onChange={this.handleChange} />
+              <input type="text" value={value} onInput={this.handleChange} />
               <p>{value}</p>
             </div>
           );

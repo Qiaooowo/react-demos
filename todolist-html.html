@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <script src="./build/react.development.js"></script>
+    <script src="./build/react-dom.development.js"></script>
+    <script src="./build/babel.min.js"></script>
+</head>
+
+<body>
+    <div id="app"></div>
+    <script type="text/babel">
+        {/*$ babel src --out-dir build*/ }
+        class TodoApp extends React.Component {
+            constructor(props) {
+                super(props);
+                this.state = { items: [], text: '' };
+                this.handleChange = this.handleChange.bind(this);
+                this.handleSubmit = this.handleSubmit.bind(this);
+            }
+
+            render() {
+                return (
+                    <div>
+                        <h3>TODOLIST1.</h3>
+                        <TodoList todos={this.state.items} />
+                        <form onSubmit={this.handleSubmit}>
+                            {/*转义*/}
+                            <label htmlFor="new-todo"></label>
+                            <input id="new-todo" onChange={this.handleChange} value={this.state.text} />
+                            {/*form表单中button默认submit*/}
+                            <button>
+                                Add #{this.state.items.length + 1}
+                            </button>
+                        </form>
+                        <Clock />
+                    </div>
+                );
+            }
+
+            handleChange(e) {
+                this.setState({ text: e.target.value });
+
+            }
+
+            handleSubmit(e) {
+                {/*react阻止默认行为*/ }
+                e.preventDefault();
+                if (this.state.text.length === 0) {
+                    return;
+                }
+                const newItem = {
+                    text: this.state.text,
+                    id: Date.now()
+                };
+                {/*拼接*/ }
+                this.setState(state => ({
+                    items: state.items.concat(newItem),
+                    text: ''
+                }));
+            }
+
+        }
+
+        class TodoList extends React.Component {
+            render() {
+                return (
+                    <ul>
+                        {this.props.todos.map(todo => (
+                            <li key={todo.id}>{todo.text}</li>
+                        ))}
+                    </ul>
+                );
+            }
+        }
+        class Clock extends React.Component {
+            constructor(props) {
+                super(props);
+                this.state = { date: new Date() };
+            }
+            componentDidMount() {
+                this.timer = setInterval(() => this.tick(), 1000);
+
+            }
+
+            componentWillUnmount() {
+                clearInterval(this.timerID);
+            }
+            tick() {
+                this.setState({
+                    date: new Date()
+                });
+            }
+            render() {
+                return (
+                    <div>
+                        <h1>Time</h1>
+                        <h2>it is {this.state.date.toLocaleTimeString()}.</h2>
+                    </div>
+                )
+            }
+        }
+        ReactDOM.render(
+            <TodoApp />,
+            document.getElementById('app')
+        );
+    </script>
+</body>
+
+</html>
